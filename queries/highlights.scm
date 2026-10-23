@@ -1,4 +1,5 @@
 (binding . (identifier) @variable )
+(binding "and" . (identifier) @variable )
 (param_list (typed_name (identifier) @variable.parameter) )
 
 ; TODO: record/tuple members, etc. (capture is @variable.member)
@@ -23,7 +24,8 @@
   "and"
   ; "cloref1"
   "let"
-  ; "local"
+  "local"
+  "in"
   "where"
   "end"
   "implement"
