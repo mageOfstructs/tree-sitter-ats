@@ -12,7 +12,8 @@ export default grammar({
 
   rules: {
     // TODO: add the actual grammar rules
-    source_file: ($) => repeat(choice($.binding, $.cpp_predicate, $.impl)),
+    source_file: ($) =>
+      repeat(choice($.binding, $.function_binding, $.cpp_directive, $.impl)),
 
     binding: ($) =>
       seq(
@@ -29,6 +30,7 @@ export default grammar({
         $.param_list,
         "=",
         $.expression,
+        repeat(seq("and", $.identifier, $.param_list, "=", $.expression)),
       ),
 
     impl: ($) =>
@@ -64,7 +66,7 @@ export default grammar({
         choice(")", "/"),
       ),
     single_comment: ($) => seq("//", /.*/),
-    cpp_predicate: ($) => /#.*/,
+    cpp_directive: ($) => /#.*/,
   },
 
   extras: ($) => [" ", "\t", "\n", $.single_comment, $.block_comment],
