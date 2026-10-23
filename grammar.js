@@ -15,15 +15,16 @@ export default grammar({
   name: "ats",
 
   rules: {
-    source_file: ($) =>
-      repeat(
-        choice(
-          $.binding,
-          $.function_binding,
-          $.typedef_binding,
-          $.cpp_directive,
-          $.impl,
-        ),
+    source_file: ($) => repeat($._statement),
+
+    _statement: ($) =>
+      choice(
+        $.binding,
+        $.function_binding,
+        $.typedef_binding,
+        $.cpp_directive,
+        $.impl,
+        $.local_block,
       ),
 
     binding: ($) =>
@@ -47,6 +48,8 @@ export default grammar({
       ),
     typedef_binding: ($) => seq("typedef", $.identifier, "=", $._type),
 
+    local_block: ($) =>
+      seq("local", repeat($.binding), "in", repeat($._statement), "end"),
     impl: ($) =>
       seq("implement", $.identifier, $.param_list, "=", $._expression),
 
