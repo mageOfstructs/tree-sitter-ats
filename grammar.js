@@ -7,6 +7,10 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+function list(inner, delim = ",") {
+  return optional(seq(inner, repeat(seq(delim, inner))));
+}
+
 export default grammar({
   name: "ats",
 
@@ -26,6 +30,7 @@ export default grammar({
       seq(
         "val",
         $.identifier,
+        optional($._type_spec),
         "=",
         $._expression,
         repeat(seq("and", $.identifier, "=", $._expression)),
@@ -46,13 +51,9 @@ export default grammar({
       seq("implement", $.identifier, $.param_list, "=", $._expression),
 
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    fcall: ($) =>
-      seq(
-        $.identifier,
-        "(",
-        optional(seq($._expression, repeat(seq(",", $._expression)))),
-        ")",
-      ),
+    fcall: ($) => seq($.identifier, $._passed_params),
+    _passed_params: ($) =>
+      choice(seq("(", list($._expression), ")"), $._expression),
 
     _expression: ($) =>
       choice(
@@ -61,7 +62,13 @@ export default grammar({
         $._primary_expression,
         $.unary_expression,
         $.binary_expression,
-      ), // TODO: to define
+        $.let_expr,
+        $.where_expr,
+      ),
+
+    let_expr: ($) => seq("let", repeat($.binding), "in", $._expression, "end"),
+    where_expr: ($) =>
+      prec(1, seq($._expression, "where", "{", repeat($.binding), "}")),
 
     unary_expression: ($) =>
       prec(
@@ -91,23 +98,25 @@ export default grammar({
         ),
       ),
 
-    param_list: ($) =>
-      seq(
-        "(",
-        optional(seq($.typed_name, repeat(seq(",", $.typed_name)))),
-        ")",
-      ),
+    param_list: ($) => seq("(", list($.typed_name), ")"),
 
-    _primary_expression: ($) => choice($.number, $.string, $.unit),
+    _primary_expression: ($) =>
+      choice($.number, $.char, $.string, $.unit, $.lambda, $.boolean),
     number: ($) => /[0-9]+\.?[0-9]*[eE]?[+-]?[0-9]*/,
+    char: ($) => seq("'", /[^'\\]|(\\.)/, "'"),
     string: ($) => seq('"', /[^"]*/, '"'),
+    boolean: ($) => choice("true", "false"),
     unit: ($) => "()",
+    lambda: ($) => seq("lam", $._passed_params, "=>", $._expression),
 
     typed_name: ($) => seq($.identifier, $._type_spec),
     _type_spec: ($) => seq(":", $._type),
-    _type: ($) => choice($.basic_type, $.tuple_type, $.identifier),
-    tuple_type: ($) =>
-      seq("(", optional(seq($._type, repeat(seq(",", $._type)))), ")"),
+    _type_list: ($) => seq("(", list($._type), ")"),
+    _type: ($) =>
+      choice($.basic_type, $.tuple_type, $.function_type, $.identifier),
+    tuple_type: ($) => $._type_list,
+    function_type: ($) =>
+      prec.right(1, seq(choice($._type_list, $._type), "->", $._type)),
     basic_type: ($) =>
       choice(
         "int",
