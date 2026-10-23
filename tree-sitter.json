@@ -12,7 +12,9 @@
         "dats"
       ],
       "injection-regex": "^ats$",
-      "class-name": "TreeSitterAts"
+      "class-name": "TreeSitterAts",
+      "highlights": "queries/highlights.scm",
+      "locals": "queries/locals.scm"
     }
   ],
   "metadata": {
