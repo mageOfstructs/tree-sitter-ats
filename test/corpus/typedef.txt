@@ -4,8 +4,9 @@ Typedefs
 
 typedef int2 = (int, int)
 typedef uwu = string
+typedef myfun = (uwu, int2) -> void
 
-fun rawr(msg: uwu, pos: int2) = print(msg)
+fun rawr(msg: uwu, pos: int2) = print msg
 
 ---
 
@@ -18,6 +19,12 @@ fun rawr(msg: uwu, pos: int2) = print(msg)
     (typedef_binding
         (identifier)
         (basic_type))
+    (typedef_binding
+        (identifier)
+        (function_type
+            (identifier)
+            (identifier)
+            (basic_type)))
     (function_binding
         (identifier)
         (param_list

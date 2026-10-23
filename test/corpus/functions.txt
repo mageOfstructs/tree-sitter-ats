@@ -3,12 +3,15 @@ Functions
 =========
 
 fn test() = ()
+fn test1(c: char) = ()
 fun test2(x: int, y: string, z: sint): char = ()
 
 fnx awa() = () and
     uwu() = ()
 
 // TODO: complex expressions
+val _ = test2 (6, "wuf", ~1)
+val _ = test1 'a'
 
 ---
 
@@ -16,6 +19,13 @@ fnx awa() = () and
     (function_binding
         (identifier)
         (param_list)
+        (unit))
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (basic_type)))
         (unit))
     (function_binding
         (identifier)
@@ -38,4 +48,17 @@ fnx awa() = () and
         (identifier)
         (param_list)
         (unit))
-    (single_comment))
+    (single_comment)
+    (binding
+        (identifier)
+        (fcall
+            (identifier)
+            (number)
+            (string)
+            (unary_expression
+                (number))))
+    (binding
+        (identifier)
+        (fcall
+            (identifier)
+            (char))))

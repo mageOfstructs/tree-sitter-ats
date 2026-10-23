@@ -12,6 +12,10 @@ val more_expr = (~1 > 1) orelse (~1 <= 1)
 
 val str = "string"
 val uwuwuwu_123 = "waaaaff"
+val c = '\n'
+val c = 'n'
+val c = 'A'
+val c = '"'
 
 val __species = "dragon" and is = "cute"
 
@@ -53,6 +57,18 @@ val __species = "dragon" and is = "cute"
     (binding
         (identifier)
         (string))
+    (binding
+        (identifier)
+        (char))
+    (binding
+        (identifier)
+        (char))
+    (binding
+        (identifier)
+        (char))
+    (binding
+        (identifier)
+        (char))
     (binding
         (identifier)
         (string)
