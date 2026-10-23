@@ -1,0 +1,22 @@
+========
+Comments
+========
+
+// this is comment
+
+/*and this is comment*/
+/*
+
+**
+also this
+////
+*******
+
+*****/
+
+---
+
+(source_file
+    (single_comment)
+    (block_comment)
+    (block_comment))

@@ -1,0 +1,35 @@
+==========
+Precedence
+==========
+
+val a = 1 > 0 andalso 5 <> 0 + 1
+val clab = 1 / 2 + 1 * (1 + 1 * 3)
+
+---
+
+(source_file
+    (binding
+        (identifier)
+        (binary_expression
+            (binary_expression
+                (number)
+                (number))
+            (binary_expression
+                (number)
+                (binary_expression
+                    (number)
+                    (number)))))
+    (binding
+        (identifier)
+        (binary_expression
+            (binary_expression
+                (number)
+                (number))
+            (binary_expression
+                (number)
+                (unary_expression
+                    (binary_expression
+                        (number)
+                        (binary_expression
+                            (number)
+                            (number))))))))

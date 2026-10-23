@@ -1,0 +1,41 @@
+=========
+Functions
+=========
+
+fn test() = ()
+fun test2(x: int, y: string, z: sint): char = ()
+
+fnx awa() = () and
+    uwu() = ()
+
+// TODO: complex expressions
+
+---
+
+(source_file
+    (function_binding
+        (identifier)
+        (param_list)
+        (unit))
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (basic_type))
+            (typed_name
+                (identifier)
+                (basic_type))
+            (typed_name
+                (identifier)
+                (basic_type)))
+        (basic_type)
+        (unit))
+    (function_binding
+        (identifier)
+        (param_list)
+        (unit)
+        (identifier)
+        (param_list)
+        (unit))
+    (single_comment))

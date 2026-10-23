@@ -1,0 +1,32 @@
+========
+Typedefs
+========
+
+typedef int2 = (int, int)
+typedef uwu = string
+
+fun rawr(msg: uwu, pos: int2) = print(msg)
+
+---
+
+(source_file
+    (typedef_binding
+        (identifier)
+        (tuple_type
+            (basic_type)
+            (basic_type)))
+    (typedef_binding
+        (identifier)
+        (basic_type))
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (identifier))
+            (typed_name
+                (identifier)
+                (identifier)))
+        (fcall
+            (identifier)
+            (identifier))))

@@ -1,0 +1,19 @@
+=========================
+C Preprocessor Directives
+=========================
+
+#include "asdf"
+#define 8
+#define true false // very good
+#ifndef true
+
+#endif
+
+---
+
+(source_file
+    (cpp_directive)
+    (cpp_directive)
+    (cpp_directive)
+    (cpp_directive)
+    (cpp_directive))

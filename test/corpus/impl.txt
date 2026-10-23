@@ -1,0 +1,35 @@
+====
+Impl
+====
+
+implement main0() = ()
+implement main1(asfd: void) = ()
+implement main(asfd: void, asdf: void, asfd: void) = ()
+
+---
+
+(source_file
+    (impl
+        (identifier)
+        (param_list)
+        (unit))
+    (impl
+        (identifier)
+        (param_list
+            (typed_name 
+                (identifier)
+                (basic_type)))
+        (unit))
+    (impl
+        (identifier)
+        (param_list
+            (typed_name 
+                (identifier)
+                (basic_type))
+            (typed_name 
+                (identifier)
+                (basic_type))
+            (typed_name 
+                (identifier)
+                (basic_type)))
+        (unit)))

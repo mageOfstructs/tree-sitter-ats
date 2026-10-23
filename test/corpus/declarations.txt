@@ -1,0 +1,61 @@
+============
+Declarations
+============
+
+val x = 1
+val y = ~1
+val pi = 31416E-4
+val pi = 3.
+val pi = 3.14
+
+val more_expr = (~1 > 1) orelse (~1 <= 1)
+
+val str = "string"
+val uwuwuwu_123 = "waaaaff"
+
+val __species = "dragon" and is = "cute"
+
+---
+
+(source_file
+    (binding
+        (identifier)
+        (number))
+    (binding
+        (identifier)
+        (unary_expression
+            (number)))
+    (binding
+        (identifier)
+        (number))
+    (binding
+        (identifier)
+        (number))
+    (binding
+        (identifier)
+        (number))
+    (binding
+        (identifier)
+        (binary_expression
+            (unary_expression
+                (binary_expression
+                    (unary_expression
+                        (number))
+                    (number)))
+            (unary_expression
+                (binary_expression
+                    (unary_expression
+                        (number))
+                    (number)))))
+    (binding
+        (identifier)
+        (string))
+    (binding
+        (identifier)
+        (string))
+    (binding
+        (identifier)
+        (string)
+        (identifier)
+        (string))
+)
