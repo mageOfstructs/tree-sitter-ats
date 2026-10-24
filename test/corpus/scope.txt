@@ -1,0 +1,52 @@
+======
+Scopes
+======
+
+val a = let
+    val b = 1
+    val c = 6
+in
+    b + c
+end
+
+local
+val a = 6
+in
+val _ = print a 
+end
+
+val uwu = rawr * 3 where { val rawr = 621 }
+
+---
+
+(source_file
+    (binding
+        (identifier)
+        (let_expr
+            (binding
+                (identifier)
+                (number))
+            (binding
+                (identifier)
+                (number))
+            (binary_expression
+                (identifier)
+                (identifier))))
+    (local_block
+        (binding
+            (identifier)
+            (number))
+        (binding
+            (identifier)
+            (fcall
+                (identifier)
+                (identifier))))
+    (binding
+        (identifier)
+        (where_expr
+            (binary_expression
+                (identifier)
+                (number))
+            (binding
+                (identifier)
+                (number)))))
