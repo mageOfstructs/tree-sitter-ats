@@ -6,6 +6,7 @@ typedef r = @{ x= double, y=double, z =float }
 
 val r = @{ x=0., y= 0., z =1.}
 val r2: @{ x= double, y=double, z =float } = r
+val heap_r = '{ x=0., y= 0., z =1.}
 
 fn foo(r: @{ x= double, y=double, z =float }) = ()
 
@@ -40,6 +41,15 @@ fn foo(r: @{ x= double, y=double, z =float }) = ()
             (identifier)
             (basic_type))
         (identifier))
+    (binding
+        (identifier)
+        (record_literal
+            (identifier)
+            (number)
+            (identifier)
+            (number)
+            (identifier)
+            (number)))
     (function_binding
         (identifier)
         (param_list
