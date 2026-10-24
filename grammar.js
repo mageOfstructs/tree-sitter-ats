@@ -124,7 +124,7 @@ export default grammar({
           seq("not", "(", $._expression, ")"),
           seq("~", $._expression),
           seq("(", $._expression, ")"),
-          seq($.identifier, ".", $.identifier),
+          seq($.identifier, repeat1(seq(".", choice($.identifier, $.index)))),
         ),
       ),
 
@@ -157,14 +157,27 @@ export default grammar({
         $.lambda,
         $.boolean,
         $.record_literal,
+        $.tuple_literal,
       ),
+    index: ($) => /[0-9]+/,
     number: ($) => /[0-9]+\.?[0-9]*[eE]?[+-]?[0-9]*/,
     char: ($) => seq("'", /[^'\\]|(\\.)/, "'"),
     string: ($) => seq('"', /[^"]*/, '"'),
     boolean: ($) => choice("true", "false"),
     unit: ($) => "()",
-    lambda: ($) => seq("lam", $._passed_params, "=>", $._expression),
+    lambda: ($) =>
+      seq(
+        "lam",
+        choice(
+          seq("(", list(seq($.identifier, optional($._type_spec))), ")"),
+          $.identifier,
+        ),
+        optional($._type_spec),
+        "=>",
+        $._expression,
+      ),
 
+    tuple_literal: ($) => seq("@(", list($._expression), ")"),
     record_literal: ($) =>
       seq(
         choice("@{", "'{"),
