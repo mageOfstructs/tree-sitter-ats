@@ -72,9 +72,12 @@ export default grammar({
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     fcall: ($) => seq($.identifier, $._passed_params),
     _passed_params: ($) =>
-      choice(
-        seq("(", list($._expression), ")"),
-        choice($.identifier, $._primary_expression),
+      prec(
+        1,
+        choice(
+          seq("(", list($._expression), ")"),
+          choice($.identifier, $._primary_expression),
+        ),
       ),
 
     _pattern: ($) => choice($.tuple_dpattern, $.record_dpattern),
@@ -177,7 +180,8 @@ export default grammar({
         $._expression,
       ),
 
-    tuple_literal: ($) => seq("@(", list($._expression), ")"),
+    tuple_literal: ($) =>
+      seq(choice("@(", "'(", "("), list($._expression), ")"),
     record_literal: ($) =>
       seq(
         choice("@{", "'{"),
