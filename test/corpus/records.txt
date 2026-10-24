@@ -1,0 +1,55 @@
+=======
+Records
+=======
+
+typedef r = @{ x= double, y=double, z =float }
+
+val r = @{ x=0., y= 0., z =1.}
+val r2: @{ x= double, y=double, z =float } = r
+
+fn foo(r: @{ x= double, y=double, z =float }) = ()
+
+---
+
+(source_file
+    (typedef_binding
+        (identifier)
+        (record_type
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type)))
+    (binding
+        (identifier)
+        (record_literal
+            (identifier)
+            (number)
+            (identifier)
+            (number)
+            (identifier)
+            (number)))
+    (binding
+        (identifier)
+        (record_type
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type))
+        (identifier))
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (record_type
+                    (identifier)
+                    (basic_type)
+                    (identifier)
+                    (basic_type)
+                    (identifier)
+                    (basic_type))))
+        (unit)))

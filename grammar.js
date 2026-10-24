@@ -115,7 +115,15 @@ export default grammar({
     param_list: ($) => seq("(", list($.typed_name), ")"),
 
     _primary_expression: ($) =>
-      choice($.number, $.char, $.string, $.unit, $.lambda, $.boolean),
+      choice(
+        $.number,
+        $.char,
+        $.string,
+        $.unit,
+        $.lambda,
+        $.boolean,
+        $.record_literal,
+      ),
     number: ($) => /[0-9]+\.?[0-9]*[eE]?[+-]?[0-9]*/,
     char: ($) => seq("'", /[^'\\]|(\\.)/, "'"),
     string: ($) => seq('"', /[^"]*/, '"'),
@@ -123,12 +131,22 @@ export default grammar({
     unit: ($) => "()",
     lambda: ($) => seq("lam", $._passed_params, "=>", $._expression),
 
+    record_literal: ($) =>
+      seq(choice("@{", "'{"), list(seq($.identifier, "=", $._expression)), "}"),
+
     typed_name: ($) => seq($.identifier, $._type_spec),
     _type_spec: ($) => seq(":", $._type),
     _type_list: ($) => seq("(", list($._type), ")"),
     _type: ($) =>
-      choice($.basic_type, $.tuple_type, $.function_type, $.identifier),
+      choice(
+        $.basic_type,
+        $.tuple_type,
+        $.function_type,
+        $.record_type,
+        $.identifier,
+      ),
     tuple_type: ($) => $._type_list,
+    record_type: ($) => seq("@{", list(seq($.identifier, "=", $._type)), "}"),
     function_type: ($) =>
       prec.right(1, seq(choice($._type_list, $._type), "->", $._type)),
     basic_type: ($) =>
