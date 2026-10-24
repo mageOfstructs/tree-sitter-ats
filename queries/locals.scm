@@ -1,8 +1,13 @@
-(function_binding) @local.scope
-(let_expr) @local.scope
-(where_expr) @local.scope
+[
+ (function_binding)
+ (let_expr)
+ (where_expr)
+ (local_block)
+ (source_file)
+ (lambda)
+] @local.scope
 
-(param_list (typed_name (identifier) @local.definition) )
-(binding (identifier) @local.definition)
+(typed_name . (identifier) @local.definition )
+(binding (identifier) @local.definition )
 
 (identifier) @local.reference

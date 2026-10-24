@@ -1,6 +1,9 @@
 (binding . (identifier) @variable )
 (binding "and" . (identifier) @variable )
 (param_list (typed_name (identifier) @variable.parameter) )
+(record_dpattern record_assignment: (identifier) @variable )
+(binary_expression (identifier) @variable )
+(unary_expression (identifier) @variable )
 
 ; TODO: record/tuple members, etc. (capture is @variable.member)
 
@@ -14,7 +17,10 @@
 (typedef_binding . (identifier) @type.definition )
 
 (function_binding) @function
-; (function_binding . ["print", "$extfcall"]) @function.builtin
+((function_binding) @function.builtin
+ (#any-of? @function.builtin 
+    "print"
+    "$extfcall"))
 (fcall) @function.call
 
 ; (binary_expression (_expression) . (_) @operator . (_expression) )
@@ -29,6 +35,7 @@
   "where"
   "end"
   "implement"
+  "typedef"
 ] @keyword
 
 [ 
