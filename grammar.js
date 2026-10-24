@@ -27,11 +27,12 @@ export default grammar({
         $.local_block,
       ),
 
+    _generic_binding: ($) =>
+      choice($.binding, $.function_binding, $.typedef_binding),
     binding: ($) =>
       seq(
         "val",
-        $.identifier,
-        optional($._type_spec),
+        choice(seq($.identifier, optional($._type_spec)), $._pattern),
         "=",
         $._expression,
         repeat(seq("and", $.identifier, "=", $._expression)),
@@ -44,19 +45,47 @@ export default grammar({
         optional($._type_spec),
         "=",
         $._expression,
-        repeat(seq("and", $.identifier, $.param_list, "=", $._expression)),
+        repeat(
+          seq(
+            "and",
+            $.identifier,
+            $.param_list,
+            optional($._type_spec),
+            "=",
+            $._expression,
+          ),
+        ),
       ),
     typedef_binding: ($) => seq("typedef", $.identifier, "=", $._type),
 
     local_block: ($) =>
-      seq("local", repeat($.binding), "in", repeat($._statement), "end"),
+      seq(
+        "local",
+        repeat($._generic_binding),
+        "in",
+        repeat($._statement),
+        "end",
+      ),
     impl: ($) =>
       seq("implement", $.identifier, $.param_list, "=", $._expression),
 
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
     fcall: ($) => seq($.identifier, $._passed_params),
     _passed_params: ($) =>
-      choice(seq("(", list($._expression), ")"), $._expression),
+      choice(
+        seq("(", list($._expression), ")"),
+        choice($.identifier, $._primary_expression),
+      ),
+
+    _pattern: ($) => choice($.tuple_dpattern, $.record_dpattern),
+    tuple_dpattern: ($) => seq("(", list($.identifier), ")"),
+    record_dpattern: ($) =>
+      seq(
+        "@{",
+        list(field("record_assignment", seq($.identifier, "=", $.identifier))),
+        optional(seq(",", "...")),
+        "}",
+      ),
 
     _expression: ($) =>
       choice(
@@ -70,9 +99,13 @@ export default grammar({
         $.if_expr,
       ),
 
-    let_expr: ($) => seq("let", repeat($.binding), "in", $._expression, "end"),
+    let_expr: ($) =>
+      seq("let", repeat($._generic_binding), "in", $._expression, "end"),
     where_expr: ($) =>
-      prec(1, seq($._expression, "where", "{", repeat($.binding), "}")),
+      prec(
+        1,
+        seq($._expression, "where", "{", repeat($._generic_binding), "}"),
+      ),
     if_expr: ($) =>
       prec.right(
         seq(
@@ -91,6 +124,7 @@ export default grammar({
           seq("not", "(", $._expression, ")"),
           seq("~", $._expression),
           seq("(", $._expression, ")"),
+          seq($.identifier, ".", $.identifier),
         ),
       ),
 
@@ -132,7 +166,12 @@ export default grammar({
     lambda: ($) => seq("lam", $._passed_params, "=>", $._expression),
 
     record_literal: ($) =>
-      seq(choice("@{", "'{"), list(seq($.identifier, "=", $._expression)), "}"),
+      seq(
+        choice("@{", "'{"),
+        list(seq($.identifier, "=", $._expression)),
+        "}",
+        field("type", optional($._type_spec)),
+      ),
 
     typed_name: ($) => seq($.identifier, $._type_spec),
     _type_spec: ($) => seq(":", $._type),

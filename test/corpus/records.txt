@@ -4,7 +4,7 @@ Records
 
 typedef r = @{ x= double, y=double, z =float }
 
-val r = @{ x=0., y= 0., z =1.}
+val r = @{ x=0., y= 0., z =1.} : r
 val r2: @{ x= double, y=double, z =float } = r
 val heap_r = '{ x=0., y= 0., z =1.}
 
@@ -30,7 +30,8 @@ fn foo(r: @{ x= double, y=double, z =float }) = ()
             (identifier)
             (number)
             (identifier)
-            (number)))
+            (number)
+            (identifier)))
     (binding
         (identifier)
         (record_type

@@ -12,6 +12,7 @@ fnx awa() = () and
 // TODO: complex expressions
 val _ = test2 (6, "wuf", ~1)
 val _ = test1 'a'
+val _ = test2(n) * 3 + 1
 
 ---
 
@@ -61,4 +62,14 @@ val _ = test1 'a'
         (identifier)
         (fcall
             (identifier)
-            (char))))
+            (char)))
+    (binding
+        (identifier)
+        (binary_expression
+            (binary_expression
+                (fcall
+                    (identifier)
+                    (identifier))
+                (number))
+            (number))
+        ))
