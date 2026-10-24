@@ -2,8 +2,10 @@
 (binding "and" . (identifier) @variable )
 (param_list (typed_name (identifier) @variable.parameter) )
 (record_dpattern record_assignment: (identifier) @variable )
+(lambda (identifier) @variable)
 (binary_expression (identifier) @variable )
 (unary_expression (identifier) @variable )
+(unary_expression (index) @variable.member )
 
 ; TODO: record/tuple members, etc. (capture is @variable.member)
 
@@ -16,14 +18,28 @@
 (basic_type) @type.builtin
 (typedef_binding . (identifier) @type.definition )
 
-(function_binding) @function
+(function_binding . (identifier) @function )
+(function_binding "and" . (identifier) @function )
+(impl . (identifier) @function)
 ((function_binding) @function.builtin
  (#any-of? @function.builtin 
     "print"
     "$extfcall"))
-(fcall) @function.call
+(fcall . (identifier) @function.call )
 
-; (binary_expression (_expression) . (_) @operator . (_expression) )
+[
+ "="
+ "<>"
+ "<="
+ ">="
+ "<"
+ ">"
+ "~"
+ "*"
+ "/"
+ "-"
+ "+"
+] @operator
 
 [
   "val" 
@@ -42,6 +58,7 @@
   "fn"
   "fun"
   "fnx"
+  "lam"
 ] @keyword.function
 
 [
@@ -50,7 +67,7 @@
  "not"
 ] @keyword.operator
 
-; [ "if" "else" ] @keyword.conditional
+[ "if" "then" "else" ] @keyword.conditional
 
 [
  (single_comment)
