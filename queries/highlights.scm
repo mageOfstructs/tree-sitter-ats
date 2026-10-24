@@ -35,11 +35,11 @@
  "<"
  ">"
  "~"
- "*"
- "/"
  "-"
  "+"
 ] @operator
+
+(binary_expression ["*" "/"] @operator)
 
 [
   "val" 
