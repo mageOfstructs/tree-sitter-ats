@@ -67,11 +67,22 @@ export default grammar({
         $.binary_expression,
         $.let_expr,
         $.where_expr,
+        $.if_expr,
       ),
 
     let_expr: ($) => seq("let", repeat($.binding), "in", $._expression, "end"),
     where_expr: ($) =>
       prec(1, seq($._expression, "where", "{", repeat($.binding), "}")),
+    if_expr: ($) =>
+      prec.right(
+        seq(
+          "if",
+          $._expression,
+          "then",
+          $._expression,
+          optional(seq("else", $._expression)),
+        ),
+      ),
 
     unary_expression: ($) =>
       prec(
