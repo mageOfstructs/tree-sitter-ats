@@ -1,0 +1,86 @@
+=======
+Lambdas
+=======
+
+val x = lam x => x
+val y = lam x: double => x
+val z = lam (x) => x
+val a = lam (x): double => x
+val b = lam (x, y): double => x + y
+val b = lam (x, y) => x + y
+val b = lam (x: double, y) => x + y
+val b = lam (x: double, y): double => x + y
+val b = lam (x: double, y: double): double => x + y
+
+---
+
+(source_file
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (identifier)))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (basic_type)
+            (identifier)))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (identifier)))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (basic_type)
+            (identifier)))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (identifier)
+            (basic_type)
+            (binary_expression
+                (identifier)
+                (identifier))))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (identifier)
+            (binary_expression
+                (identifier)
+                (identifier))))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (basic_type)
+            (identifier)
+            (binary_expression
+                (identifier)
+                (identifier))))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type)
+            (binary_expression
+                (identifier)
+                (identifier))))
+    (binding
+        (identifier)
+        (lambda
+            (identifier)
+            (basic_type)
+            (identifier)
+            (basic_type)
+            (basic_type)
+            (binary_expression
+                (identifier)
+                (identifier)))))
