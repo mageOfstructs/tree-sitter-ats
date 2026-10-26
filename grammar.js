@@ -42,7 +42,7 @@ export default grammar({
         choice("fn", "fun", "fnx"),
         $.identifier,
         $.param_list,
-        optional($._type_spec),
+        optional($._function_ret_type),
         "=",
         $._expression,
         repeat(
@@ -50,12 +50,13 @@ export default grammar({
             "and",
             $.identifier,
             $.param_list,
-            optional($._type_spec),
+            optional($._function_ret_type),
             "=",
             $._expression,
           ),
         ),
       ),
+    _function_ret_type: ($) => seq(":", optional($.closure_spec), $._type),
     typedef_binding: ($) => seq("typedef", $.identifier, "=", $._type),
 
     local_block: ($) =>
@@ -70,7 +71,8 @@ export default grammar({
       seq("implement", $.identifier, $.param_list, "=", $._expression),
 
     identifier: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
-    fcall: ($) => seq($.identifier, $._passed_params),
+    fcall: ($) =>
+      prec(2, seq(choice($.identifier, $.fcall, $.lambda), $._passed_params)),
     _passed_params: ($) =>
       prec(
         1,
@@ -204,7 +206,14 @@ export default grammar({
     tuple_type: ($) => $._type_list,
     record_type: ($) => seq("@{", list(seq($.identifier, "=", $._type)), "}"),
     function_type: ($) =>
-      prec.right(1, seq(choice($._type_list, $._type), "->", $._type)),
+      prec.right(
+        1,
+        seq(
+          choice($._type_list, $._type),
+          choice("->", seq("-", $.closure_spec)),
+          $._type,
+        ),
+      ),
     basic_type: ($) =>
       choice(
         "int",
@@ -226,6 +235,7 @@ export default grammar({
         "usint",
         "string",
       ),
+    closure_spec: ($) => choice("<cloref1>", "<cloref>"),
 
     block_comment: ($) =>
       seq(

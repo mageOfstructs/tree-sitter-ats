@@ -1,0 +1,59 @@
+========
+Closures
+========
+
+fun sum
+    (n: int): int = let
+    fun loop
+    (
+        i: int, res: int
+    ) :<cloref1> int =
+        ()
+in
+    loop (1, 0)
+end
+
+fun curry(x: int): int -<cloref1> int = lam y  => x + y
+
+---
+
+(source_file
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (basic_type)))
+        (basic_type)
+        (let_expr
+            (function_binding
+                (identifier)
+                (param_list
+                    (typed_name
+                        (identifier)
+                        (basic_type))
+                    (typed_name
+                        (identifier)
+                        (basic_type)))
+                (closure_spec)
+                (basic_type)
+                (unit))
+            (fcall
+                (identifier)
+                (number)
+                (number))))
+    (function_binding
+        (identifier)
+        (param_list
+            (typed_name
+                (identifier)
+                (basic_type)))
+        (function_type
+            (basic_type)
+            (closure_spec)
+            (basic_type))
+        (lambda
+            (identifier)
+            (binary_expression
+                (identifier)
+                (identifier)))))
