@@ -235,8 +235,16 @@ export default grammar({
         choice(")", "/"),
       ),
     single_comment: ($) => seq("//", /.*/),
+    eof_comment: ($) => seq("////", new RustRegex("(?s).*")),
     cpp_directive: ($) => /#.*/,
   },
 
-  extras: ($) => [" ", "\t", "\n", $.single_comment, $.block_comment],
+  extras: ($) => [
+    " ",
+    "\t",
+    "\n",
+    $.single_comment,
+    $.block_comment,
+    $.eof_comment,
+  ],
 });

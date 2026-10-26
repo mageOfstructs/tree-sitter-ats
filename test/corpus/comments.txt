@@ -14,9 +14,19 @@ also this
 
 *****/
 
+////
+and after here no syntax is evaluated anymore
+
+(****** )
+//
+/******
+
+/*Ü/
+
 ---
 
 (source_file
     (single_comment)
     (block_comment)
-    (block_comment))
+    (block_comment)
+    (eof_comment))
