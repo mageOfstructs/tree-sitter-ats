@@ -1,0 +1,133 @@
+=========
+Datatypes
+=========
+
+datatype furry_noise =
+    | uwu of ()
+    | awa of ()
+    | rawr of ()
+
+datatype classified_furry_noise =
+    dragon_noise of string
+    | fox_noise of string
+    | bot_noise of (int, int) // pitch and length of beep
+
+val _ = case uwu of
+    uwu() => "Uwu!"
+    | awa() => "Awa!"
+
+val _ = case- uwu of
+    uwu() => "Uwu!"
+    | awa() => "Awa!"
+
+val _ = case+ uwu of
+    uwu() => "Uwu!"
+    | awa() => "Awa!"
+    | rawr() => "Rawr!"
+
+val _ = let
+    val bot_noise(pitch, len) = noise
+in
+    print(pitch)
+end
+
+val () = let val x = 3
+in case+ 0 of
+    | _ when x < 0 => ()
+    | _ when x > 0 => ()
+    | _  => ()
+end
+
+---
+
+(source_file
+    (datatype_declaration
+        (identifier)
+        (constructor
+            (identifier)
+            (tuple_type))
+        (constructor
+            (identifier)
+            (tuple_type))
+        (constructor
+            (identifier)
+            (tuple_type)))
+    (datatype_declaration
+        (identifier)
+        (constructor
+            (identifier)
+            (basic_type))
+        (constructor
+            (identifier)
+            (basic_type))
+        (constructor
+            (identifier)
+            (tuple_type
+                (basic_type)
+                (basic_type))))
+    (single_comment)
+    (binding
+        (identifier)
+        (case_expr
+            (identifier)
+            (cons_dpattern
+                (identifier))
+            (string)
+            (cons_dpattern
+                (identifier))
+            (string)))
+    (binding
+        (identifier)
+        (case_expr
+            (identifier)
+            (cons_dpattern
+                (identifier))
+            (string)
+            (cons_dpattern
+                (identifier))
+            (string)))
+    (binding
+        (identifier)
+        (case_expr
+            (identifier)
+            (cons_dpattern
+                (identifier))
+            (string)
+            (cons_dpattern
+                (identifier))
+            (string)
+            (cons_dpattern
+                (identifier))
+            (string)))
+    (binding
+        (identifier)
+        (let_expr
+            (binding
+                (cons_dpattern
+                    (identifier)
+                    (identifier)
+                    (identifier))
+                (identifier))
+            (fcall
+                (identifier)
+                (identifier))))
+    (binding
+        (tuple_dpattern)
+        (let_expr
+            (binding
+                (identifier)
+                (number))
+            (case_expr
+                (number)
+                (identifier)
+                (binary_expression
+                    (identifier)
+                    (number))
+                (unit)
+                (identifier)
+                (binary_expression
+                    (identifier)
+                    (number))
+                (unit)
+                (identifier)
+                (unit)))))

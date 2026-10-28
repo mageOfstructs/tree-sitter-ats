@@ -1,0 +1,61 @@
+===
+Seq
+===
+
+val _ = (
+    print("a");
+    4;
+    uwu @("a", 1);
+    1
+)
+
+val _ = begin
+end
+
+val _ = (
+    print("a");
+    4;
+    uwu @("a", 1);
+    1;
+)
+
+val _ = begin
+    1;
+end
+
+---
+
+(source_file
+    (binding
+        (identifier)
+        (seq_expr
+        (fcall
+            (identifier)
+            (string))
+        (number)
+        (fcall
+            (identifier)
+            (tuple_literal
+                (string)
+                (number)))
+        (number)))
+    (binding
+        (identifier)
+        (seq_expr))
+    (binding
+        (identifier)
+        (seq_expr
+        (fcall
+            (identifier)
+            (string))
+        (number)
+        (fcall
+            (identifier)
+            (tuple_literal
+                (string)
+                (number)))
+        (number)))
+    (binding
+        (identifier)
+        (seq_expr
+            (number))))

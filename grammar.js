@@ -25,17 +25,21 @@ export default grammar({
         $.cpp_directive,
         $.impl,
         $.local_block,
+        $.datatype_declaration,
       ),
 
     _generic_binding: ($) =>
       choice($.binding, $.function_binding, $.typedef_binding),
     binding: ($) =>
-      seq(
-        "val",
-        choice(seq($.identifier, optional($._type_spec)), $._pattern),
-        "=",
-        $._expression,
-        repeat(seq("and", $.identifier, "=", $._expression)),
+      prec(
+        1,
+        seq(
+          choice("val", "val-", "val+"),
+          choice(seq($.identifier, optional($._type_spec)), $._pattern),
+          "=",
+          $._expression,
+          repeat(seq("and", $.identifier, "=", $._expression)),
+        ),
       ),
     function_binding: ($) =>
       seq(
@@ -58,6 +62,15 @@ export default grammar({
       ),
     _function_ret_type: ($) => seq(":", optional($.closure_spec), $._type),
     typedef_binding: ($) => seq("typedef", $.identifier, "=", $._type),
+    datatype_declaration: ($) =>
+      seq(
+        "datatype",
+        $.identifier,
+        "=",
+        optional("|"),
+        list($.constructor, "|"),
+      ),
+    constructor: ($) => seq($.identifier, "of", $._type),
 
     local_block: ($) =>
       seq(
@@ -75,22 +88,29 @@ export default grammar({
       prec(2, seq(choice($.identifier, $.fcall, $.lambda), $._passed_params)),
     _passed_params: ($) =>
       prec(
-        1,
+        2,
         choice(
           seq("(", list($._expression), ")"),
           choice($.identifier, $._primary_expression),
         ),
       ),
 
-    _pattern: ($) => choice($.tuple_dpattern, $.record_dpattern),
-    tuple_dpattern: ($) => seq("(", list($.identifier), ")"),
+    _pattern: ($) =>
+      choice(
+        $.tuple_dpattern,
+        $.record_dpattern,
+        $.cons_dpattern,
+        $.identifier,
+      ),
+    tuple_dpattern: ($) => seq("(", list($._pattern), ")"),
     record_dpattern: ($) =>
       seq(
         "@{",
-        list(field("record_assignment", seq($.identifier, "=", $.identifier))),
+        list(field("record_assignment", seq($.identifier, "=", $._pattern))),
         optional(seq(",", "...")),
         "}",
       ),
+    cons_dpattern: ($) => seq($.identifier, "(", list($._pattern), ")"),
 
     _expression: ($) =>
       choice(
@@ -102,8 +122,19 @@ export default grammar({
         $.let_expr,
         $.where_expr,
         $.if_expr,
+        $.seq_expr,
+        $.case_expr,
       ),
 
+    seq_expr: ($) =>
+      choice(
+        seq("(", list($._expression, ";"), optional(";"), ")"),
+        seq(
+          "begin",
+          list($._expression, ";"),
+          prec(1, seq(optional(";"), "end")), // give the end more precedence so the parser won't accidentally confuse it for another identifier
+        ),
+      ),
     let_expr: ($) =>
       seq("let", repeat($._generic_binding), "in", $._expression, "end"),
     where_expr: ($) =>
@@ -119,6 +150,24 @@ export default grammar({
           "then",
           $._expression,
           optional(seq("else", $._expression)),
+        ),
+      ),
+    case_expr: ($) =>
+      prec.left(
+        seq(
+          choice("case", "case-", "case+"),
+          $._expression,
+          "of",
+          optional("|"),
+          list(
+            seq(
+              $._pattern,
+              optional(seq("when", $._expression)),
+              "=>",
+              $._expression,
+            ),
+            "|",
+          ),
         ),
       ),
 
@@ -183,7 +232,7 @@ export default grammar({
       ),
 
     tuple_literal: ($) =>
-      seq(choice("@(", "'(", "("), list($._expression), ")"),
+      prec(1, seq(choice("@(", "'(", "("), list($._expression), ")")),
     record_literal: ($) =>
       seq(
         choice("@{", "'{"),
