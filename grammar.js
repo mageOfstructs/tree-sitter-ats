@@ -288,12 +288,11 @@ export default grammar({
     closure_spec: ($) => choice("<cloref1>", "<cloref>"),
 
     block_comment: ($) =>
-      seq(
-        choice("(", "/"),
-        "*",
-        new RustRegex("[^*]*\\*+([^/)*][^*]*\\*+)*"),
-        choice(")", "/"),
+      choice(
+        seq("/*", new RustRegex("[^*]*\\*+([^/*][^*]*\\*+)*"), "/"),
+        seq("(*", new RustRegex("[^*]*\\*+([^)*][^*]*\\*+)*"), ")"),
       ),
+
     single_comment: ($) => seq("//", /.*/),
     eof_comment: ($) => seq("////", new RustRegex("(?s).*")),
     cpp_directive: ($) => /#.*/,

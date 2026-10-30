@@ -35,7 +35,7 @@ val () = let val x = 3
 in case+ 0 of
     | _ when x < 0 => ()
     | _ when x > 0 => ()
-    | _  => ()
+    | _ (*x = 0*)  => ()
 end
 
 ---
@@ -130,4 +130,5 @@ end
                     (number))
                 (unit)
                 (identifier)
+                (block_comment)
                 (unit)))))

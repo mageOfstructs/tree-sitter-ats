@@ -14,6 +14,11 @@ also this
 
 *****/
 
+val _ (*unused *) = 0
+val _ (* not needed*) = 0
+val _ = (*now I'm here!*) "uwuwuw"
+val _ = "(* strings cancel this! *)"
+
 ////
 and after here no syntax is evaluated anymore
 
@@ -29,4 +34,19 @@ and after here no syntax is evaluated anymore
     (single_comment)
     (block_comment)
     (block_comment)
+    (binding
+        (identifier)
+        (block_comment)
+        (number))
+    (binding
+        (identifier)
+        (block_comment)
+        (number))
+    (binding
+        (identifier)
+        (block_comment)
+        (string))
+    (binding
+        (identifier)
+        (string))
     (eof_comment))
