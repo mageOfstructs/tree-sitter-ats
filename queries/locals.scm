@@ -10,5 +10,6 @@
 (typed_name . (identifier) @local.definition )
 (binding (identifier) @local.definition )
 (lambda (identifier) @local.definition )
+(constructor (identifier) @local.definition)
 
 (identifier) @local.reference
