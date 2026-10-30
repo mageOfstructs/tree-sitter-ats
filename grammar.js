@@ -165,7 +165,7 @@ export default grammar({
               $._pattern,
               optional(seq("when", $._expression)),
               "=>",
-              $._expression,
+              choice($._expression, seq("{", repeat1($._statement), "}")),
             ),
             "|",
           ),
