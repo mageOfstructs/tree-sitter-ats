@@ -110,7 +110,8 @@ export default grammar({
         optional(seq(",", "...")),
         "}",
       ),
-    cons_dpattern: ($) => seq($.identifier, "(", list($._pattern), ")"),
+    cons_dpattern: ($) =>
+      seq($.identifier, choice(seq("(", list($._pattern), ")"), "_")),
 
     _expression: ($) =>
       choice(
